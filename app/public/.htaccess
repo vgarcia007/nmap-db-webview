@@ -1,0 +1,8 @@
+RewriteEngine On
+RewriteOptions inherit
+#Everything to index.php for routing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+
+php_value max_execution_time 300
