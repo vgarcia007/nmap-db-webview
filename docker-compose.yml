@@ -1,0 +1,58 @@
+version: '3'
+services:
+    php-apache:
+        image: nmap-webapp
+        container_name: nmap-db-webview.php
+        restart: always
+        ports:
+            - 5036:80
+        volumes:
+            - ./app/public:/var/www/html:z
+            - ./app/private:/var/www/private:z
+        environment:
+            TZ: "Europe/Berlin"
+            DB_DSN: 'mysql:host=mariadb;dbname=app;charset=utf8mb4'
+            DB_USER: appdbuser
+            DB_PASSWORD: thisisveryveryinsecure
+            APP_SECRET: fJvLacf5aRNtYZkb7pX4
+        links:
+            - 'mariadb'
+        dns:
+            - "8.8.8.8"
+    nmap-runner:
+        image: nmap-webapp
+        container_name: nmap-db-webview.nmap-runner
+        restart: always
+        privileged: true
+        network_mode : host
+        volumes:
+            - ./app/nmap-runner:/var/www/html:z
+            - ./app/private:/var/www/private:z            
+        environment:
+            TZ: "Europe/Berlin"
+            DB_DSN: 'mysql:host=127.0.0.1:3306;dbname=app;charset=utf8mb4'
+            DB_USER: appdbuser
+            DB_PASSWORD: thisisveryveryinsecure
+            APP_SECRET: fJvLacf5aRNtYZkb7pX4 
+            NMAP_NET: '192.168.188.0/24'
+        command: sh collect.sh
+
+    mariadb:
+        image: mariadb:10.1
+        container_name: nmap-db-webview.mysql
+        restart: always
+        ports:
+            - 3306:3306
+        volumes:
+            - mariadb:/var/lib/mysql
+        environment:
+            TZ: "Europe/Berlin"
+            MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+            MYSQL_ROOT_PASSWORD: "rootpwd"
+            MYSQL_USER: 'appdbuser'
+            MYSQL_PASSWORD: 'thisisveryveryinsecure'
+            MYSQL_DATABASE: 'app'
+
+
+volumes:
+    mariadb:
