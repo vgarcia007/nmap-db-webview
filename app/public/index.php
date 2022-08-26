@@ -1,7 +1,4 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 date_default_timezone_set(getenv('TZ'));
 setlocale (LC_TIME, "de_DE");
 set_include_path('/var/www/private');
@@ -11,13 +8,14 @@ require_once 'core.functions.php';
 require_once('classes/db.php');
 require_once('classes/AltoRouter.php');
 require_once('classes/user.php');
+
 # ROUTER
 #=========================================================
 #
 
 $router = new AltoRouter();
 $router->addMatchTypes(array('char' => '(?:[^\/]*)'));
-#$router->setBasePath('/');
+
 
 /*
 * setup
@@ -34,7 +32,9 @@ $router->map( 'GET', '/', function() {
 	require 'pages/home.php';
 });
 
-
+/*
+* login
+*/
 $router->map( 'GET', '/auth/login', function() {
 
 	$nav_no_container = True;
@@ -46,6 +46,9 @@ $router->map( 'POST', '/auth/login', function() {
 	require 'pages/auth.php';
 });
 
+/*
+* loginout
+*/
 $router->map( 'GET', '/auth/logout', function() {
     session_destroy();
 	header("Location: /");

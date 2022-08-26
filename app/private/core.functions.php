@@ -48,28 +48,42 @@ function has_permisson($role='user'){
     
 }
 
-function csrf_check($token){
-
-    if($token !== $_SESSION['csrf_token']) {
-        send_error('403');
-    }else{
-        //generate new one $_SESSION['csrf_token'] = uniqid('', true);
+function up_since($uptime_seconds){
+    if($uptime_seconds == 0){
+        return '';
     }
-
-}
-function same_domain_check() {
-    $myDomain       = $_SERVER['SCRIPT_URI'];
-    $requestsSource = $_SERVER['HTTP_REFERER'];
-
-    $result =  parse_url($myDomain, PHP_URL_HOST) === parse_url($requestsSource, PHP_URL_HOST);
-    if($result == true) {
-        send_error('403');
-    }
+    return '<small>up since '. date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")) - $uptime_seconds).'</small><br>'; 
 }
 
-function nav_active($nav_active = 'nix', $makeactive = 'garnix'){
-    if ($nav_active == $makeactive) {
-        echo ' active ';
+
+function match_icon($icons,$host){
+
+    $icon_path = $icons['default']['path'];
+    $icon = $icons['default']['file'];
+
+    unset($icons['default']);
+
+    foreach ($icons as $key => $icon_array){
+
+        foreach ($icon_array as $search_string => $icon_file){
+            if(str_contains($host[$key], $search_string)){
+                $icon = $icon_file;
+            }
+        }
     }
+
+    return $icon_path.$icon;
+}
+
+function match_state_css_class($host_state){
+    $status_class = ' text-danger ';
+    if($host_state == 'up'){
+        $status_class = ' text-success ';
+    }
+    if($host_state == 'vpn'){
+        $status_class = ' text-warning ';
+    }
+
+    return $status_class;
 }
 ?>

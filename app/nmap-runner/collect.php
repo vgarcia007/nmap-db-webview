@@ -13,6 +13,14 @@ $hosts = array();
 
 log_msg("--- START ---");
 
+$files = glob('/var/www/html/*.xml'); 
+foreach($files as $file){
+  if(is_file($file)) {
+    unlink($file);
+  }
+}
+
+
 log_msg("nmap scan for hosts");
 
 shell_exec('nmap -sn -T5 -oX hosts.xml '.NMAP_NET);
@@ -73,6 +81,7 @@ foreach ($someArray['host'] as $host) {
         $db->insert('hosts', $row);
         log_msg("Insert ".$row['ipv4']);
     }
+    unset($row);
 }
 
 
@@ -148,6 +157,7 @@ foreach($hosts_with_mac as $host_db){
     }
 
     $db->update_host_by_ipv4($data, $host_db['ipv4']);
+    unset($data);
     $db->delete_all_host_ports($host_db['id']);
 
     if(isset($host['ports']['port'])){
@@ -180,6 +190,9 @@ foreach($hosts_with_mac as $host_db){
         }
     }
 }
+
+
+
 
 log_msg("--- DONE - WAITING FOR NEXT RUN ---");
 ?>
