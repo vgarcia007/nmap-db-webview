@@ -21,12 +21,9 @@
       </div>
     </section>
 
-
-
-
-        <?php include('templates/javascript_common.php'); ?>
-
-        <?php include('templates/modal_login.php'); ?>
+    <?php include('templates/javascript_common.php'); ?>
+    <?php include('templates/modal_login.php'); ?>
+    
   </body>
 
 </html>

@@ -1,5 +1,5 @@
 <?php
-
+//load ENV variables
 define('APP_DEBUG', getenv('APP_DEBUG') ); 
 
 define('DBC_STRING', getenv('DB_DSN') );

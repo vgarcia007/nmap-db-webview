@@ -19,7 +19,7 @@ function generateRandomString($length = 10) {
 
 $retrun=array();
 
-# Scheiben, Serien, Treffer, Version
+
 $DB = new DB;
 
 foreach ($TABLES as $key => $TABLE) {
@@ -66,8 +66,6 @@ if ($retrun['firstrun'] == true) {
   unset($data);
 
 }
-
-
 
 print_r(json_encode($retrun, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 ?>

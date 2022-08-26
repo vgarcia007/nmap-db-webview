@@ -13,7 +13,7 @@ services:
             TZ: "Europe/Berlin"
             DB_DSN: 'mysql:host=mariadb;dbname=app;charset=utf8mb4'
             DB_USER: appdbuser
-            DB_PASSWORD: thisisveryveryinsecure
+            DB_PASSWORD: thisisveryveryinsecure  #change this
             APP_SECRET: fJvLacf5aRNtYZkb7pX4
         links:
             - 'mariadb'
@@ -32,9 +32,9 @@ services:
             TZ: "Europe/Berlin"
             DB_DSN: 'mysql:host=127.0.0.1:3306;dbname=app;charset=utf8mb4'
             DB_USER: appdbuser
-            DB_PASSWORD: thisisveryveryinsecure
+            DB_PASSWORD: thisisveryveryinsecure  #change this
             APP_SECRET: fJvLacf5aRNtYZkb7pX4 
-            NMAP_NET: '192.168.188.0/24'
+            NMAP_NET: '192.168.188.0/24'  #change this
         command: sh collect.sh
 
     mariadb:
@@ -50,7 +50,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: "no"
             MYSQL_ROOT_PASSWORD: "rootpwd"
             MYSQL_USER: 'appdbuser'
-            MYSQL_PASSWORD: 'thisisveryveryinsecure'
+            MYSQL_PASSWORD: 'thisisveryveryinsecure'  #change this
             MYSQL_DATABASE: 'app'
 
 

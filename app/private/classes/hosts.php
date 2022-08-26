@@ -103,5 +103,36 @@ class HOSTS extends DB{
             return 'warning';
         }
     }
+
+
+    public function view_known_hosts(){
+
+        $data = array();
+        
+        $query = $this->pdo->prepare("SELECT * FROM hosts WHERE state != '' ORDER BY inet_aton(ipv4)");
+        $result = $query->execute(array());
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            array_push($data, $row);
+        }
+    
+        return $data;
+    }
+
+    public function view_host_ports($hosts_id){
+        $data = array();
+        $bindings = array();
+
+        $bindings[":hosts_id"] = $hosts_id;
+
+        
+        $sql = "SELECT * FROM ports WHERE hosts_id = :hosts_id";
+        $query = $this->pdo->prepare($sql);
+        $query->execute($bindings);
+        while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            array_push($data, $row);
+        }
+    
+        return $data;
+    }
 }
 ?>
