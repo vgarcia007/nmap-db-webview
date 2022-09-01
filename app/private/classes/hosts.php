@@ -112,6 +112,9 @@ class HOSTS extends DB{
         $query = $this->pdo->prepare("SELECT * FROM hosts WHERE state != '' ORDER BY inet_aton(ipv4)");
         $result = $query->execute(array());
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+
+            $row['icon'] = $this->match_icon($row);
+            $row['state_css'] = $this->match_state_css_class($row['state']);
             array_push($data, $row);
         }
     
@@ -133,6 +136,37 @@ class HOSTS extends DB{
         }
     
         return $data;
+    }
+
+    public function match_icon($host){
+
+        $icon_path = '/img/logos/';
+        $icon = 'unknown.png';
+    
+        $icons = $this->fetch_all('icons');
+    
+        foreach ($icons as $key => $row){
+    
+
+            if(str_contains($host[$row['match_in']], $row['search_string'])){
+                $icon = $row['icon_file'];
+   
+            }
+        }
+    
+        return $icon_path.$icon;
+    }
+    
+    public function match_state_css_class($host_state){
+        $status_class = ' text-danger ';
+        if($host_state == 'up'){
+            $status_class = ' text-success ';
+        }
+        if($host_state == 'vpn'){
+            $status_class = ' text-warning ';
+        }
+    
+        return $status_class;
     }
 }
 ?>

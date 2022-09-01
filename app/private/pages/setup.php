@@ -64,6 +64,10 @@ if ($retrun['firstrun'] == true) {
 
   $DB->insert('app',$data);
   unset($data);
+  $DB->pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, 0);
+  $icons = file_get_contents('/var/www/private/icons.sql');
+  $DB->pdo->exec($icons);
+
 
 }
 
