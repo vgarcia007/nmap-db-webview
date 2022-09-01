@@ -32,6 +32,29 @@ $router->map( 'GET', '/', function() {
 	require 'pages/home.php';
 });
 
+
+/*
+* home
+*/
+$router->map( 'GET', '/icon-upload', function() {
+    auth_required('admin');
+	require 'pages/icon-manage.php';
+});
+
+$router->map( 'POST', '/icon-upload', function() {
+    auth_required('admin');
+	require 'pages/icon-upload.php';
+});
+
+$router->map( 'GET', '/icon-assignment', function() {
+    auth_required('admin');
+	require 'pages/icon-assignment.php';
+});
+
+$router->map( 'POST', '/icon-assignment', function() {
+    auth_required('admin');
+	require 'pages/icon-assign.php';
+});
 /*
 * login
 */

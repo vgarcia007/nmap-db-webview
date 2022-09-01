@@ -56,34 +56,5 @@ function up_since($uptime_seconds){
 }
 
 
-function match_icon($icons,$host){
 
-    $icon_path = $icons['default']['path'];
-    $icon = $icons['default']['file'];
-
-    unset($icons['default']);
-
-    foreach ($icons as $key => $icon_array){
-
-        foreach ($icon_array as $search_string => $icon_file){
-            if(str_contains($host[$key], $search_string)){
-                $icon = $icon_file;
-            }
-        }
-    }
-
-    return $icon_path.$icon;
-}
-
-function match_state_css_class($host_state){
-    $status_class = ' text-danger ';
-    if($host_state == 'up'){
-        $status_class = ' text-success ';
-    }
-    if($host_state == 'vpn'){
-        $status_class = ' text-warning ';
-    }
-
-    return $status_class;
-}
 ?>

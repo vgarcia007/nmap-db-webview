@@ -93,7 +93,7 @@ $hosts_with_mac = $db->get_hosts_with_mac();
 foreach($hosts_with_mac as $host_db){
 
     log_msg("nmap ".$host_db['ipv4']);
-    shell_exec('nmap -sS -O -T5 -oX '.$host_db['ipv4'].'.xml '.$host_db['ipv4']);
+    shell_exec('nmap -sS -O -T3 -oX '.$host_db['ipv4'].'.xml '.$host_db['ipv4']);
 
     if (!file_exists($host_db['ipv4'].'.xml')) {
         log_msg("no valid xml file for host ".$host_db['ipv4']);
