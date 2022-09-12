@@ -36,6 +36,7 @@
                     $hosts = new HOSTS;
                     $i=0;
                     foreach($hosts->view_known_hosts() as $host){
+                    $ports = $hosts->view_host_ports($host['id']);
                     ?>
                     <div class="media mt-4 pb-3 d-flex align-items-center element" id="<?php echo 'list'.$i; ?>">
                         <img class="me-3 img-fluid rounded" src="<?php echo $host['icon']; ?>">
@@ -43,11 +44,13 @@
                             <h5 class="mt-0 mb-1">
                               <i class="fas fa-circle <?php echo $host['state_css']; ?>" title="<?php echo $host['state']; ?>"></i> <?php echo $host['ipv4']; ?>
                             </h5>
-                            <?php if($host['state'] == 'up'){ echo up_since($host['uptime_seconds']); } ?>
-                            <?php echo $host['vendor']; ?> <i><?php echo $host['hostname']; ?></i> <br>
+                            <?php if ($host['hostname']) {echo '<i><b>'.$host['hostname'].'</b></i> <br>';} ?>
+                            <?php if ($host['vendor']) { echo $host['vendor'].'<br>';} ?>
+                            <small>known since <?php echo $host['reg_date']; ?>  last seen: <?php echo $host['last_seen']; ?> </small>
+                            <?php if($host['state'] == 'up'){ echo up_since($host['uptime_seconds']); } ?><br>
                             <small><?php echo $host['mac']; ?> <?php echo $host['os']; ?></small>
                             <?php if (!empty($ports)){ echo '<br>'; }?>
-                            <?php foreach($hosts->view_host_ports($host['id']) as $port){ ?>
+                            <?php foreach($ports as $port){ ?>
                               <small><?php echo $port['portid']; ?>/<?php echo $port['protocol']; ?> </small>
                             <?php } ?>
                         </div>

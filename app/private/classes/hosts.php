@@ -115,6 +115,9 @@ class HOSTS extends DB{
 
             $row['icon'] = $this->match_icon($row);
             $row['state_css'] = $this->match_state_css_class($row['state']);
+            if($row['last_seen'] == '0000-00-00 00:00:00'){
+                $row['last_seen'] = $row['reg_date'];
+            }
             array_push($data, $row);
         }
     
@@ -167,6 +170,107 @@ class HOSTS extends DB{
         }
     
         return $status_class;
+    }
+
+    public function scan_host($host_db){
+
+        shell_exec('nmap -sS -O -T3 -oX '.$host_db['ipv4'].'.xml '.$host_db['ipv4']);
+
+        if (!file_exists($host_db['ipv4'].'.xml')) {
+            log_msg("no valid xml file for host ".$host_db['ipv4']);
+            return;
+        }
+    
+        $nmap_xml_data = simplexml_load_file($host_db['ipv4'].'.xml');
+    
+        $nmap_json_data = json_encode($nmap_xml_data);
+    
+        $nmap_array = json_decode($nmap_json_data, true);
+    
+        if(!isset($nmap_array['host'])){
+            $this->update_host_by_ipv4(array('state' => 'down'), $host_db['ipv4']);
+            
+            if('AVM Audiovisuelles Marketing und Computersysteme GmbH' == $host_db['vendor']){
+                $this->update_host_by_ipv4(array('state' => 'vpn'), $host_db['ipv4']);
+            }
+            
+            return;
+        }
+    
+        $host = $nmap_array['host'];
+    
+        $data =array();
+    
+        $data['state'] = 'down';
+        if(isset($host['status']['@attributes']['state'])){
+            $data['state'] = $host['status']['@attributes']['state'];
+        }
+        if($data['state'] == 'up'){
+            $data['last_seen'] = date('Y-m-d H:i:s');
+        }
+      
+        $data['vendor'] = '';
+        if(isset($host['address'][1]['@attributes']['vendor'])){
+            $data['vendor'] = $host['address'][1]['@attributes']['vendor'];
+        }
+        if($data['vendor'] == ''){
+            unset($data['vendor']);
+        }
+    
+        $data['hostname'] = '';
+        if(isset($host['hostnames']['hostname']['@attributes']['name'])){
+            $data['hostname'] = $host['hostnames']['hostname']['@attributes']['name'];
+        }
+        if($data['hostname'] == ''){
+            unset($data['hostname']);
+        }
+    
+        $data['os'] = '';
+        if(isset($host['os']['osmatch']['@attributes']['name'])){
+            $data['os'] = $host['os']['osmatch']['@attributes']['name'];
+        }
+        if($data['os'] == ''){
+            unset($data['os']);
+        }
+    
+        $data['uptime_seconds'] = '';
+        if(isset($host['uptime']['@attributes']['seconds'])){
+            $data['uptime_seconds'] = $host['uptime']['@attributes']['seconds'];
+        }
+    
+        $this->update_host_by_ipv4($data, $host_db['ipv4']);
+        unset($data);
+        $this->delete_all_host_ports($host_db['id']);
+    
+        if(isset($host['ports']['port'])){
+            foreach($host['ports']['port'] as $host_port){
+    
+                
+                $port = array();
+                $port['hosts_id']=$host_db['id'];
+                $port['portid']='';
+                
+                if(isset($host_port['@attributes']['portid'])){
+                    $port['portid'] = $host_port['@attributes']['portid'];
+                }
+                $port['protocol']='';
+                if(isset($host_port['@attributes']['protocol'])){
+                    $port['protocol'] = $host_port['@attributes']['protocol'];
+                }
+                $port['state']='';
+                if(isset($host_port['state']['@attributes']['state'])){
+                    $port['state'] = $host_port['state']['@attributes']['state'];
+                }
+                $port['service']='';
+                if(isset($host_port['service']['@attributes']['name'])){
+                    $port['service'] = $host_port['service']['@attributes']['name'];
+                }
+    
+                $this->insert('ports',$port);
+                unset($port);
+    
+            }
+        }
     }
 }
 ?>

@@ -52,7 +52,7 @@ function up_since($uptime_seconds){
     if($uptime_seconds == 0){
         return '';
     }
-    return '<small>up since '. date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")) - $uptime_seconds).'</small><br>'; 
+    return '<small>up since '. date("Y-m-d H:i:s", strtotime(date("Y-m-d H:i:s")) - $uptime_seconds).'</small>'; 
 }
 
 
