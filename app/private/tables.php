@@ -35,7 +35,8 @@ vendor varchar(255) NOT NULL,
 hostname varchar(255) NOT NULL,
 os varchar(255) NOT NULL,
 uptime_seconds int NOT NULL,
-reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+last_seen TIMESTAMP NOT NULL DEFAULT "0000-00-00 00:00:00"
 )' . $TABLE_OPTIONS;
 
 

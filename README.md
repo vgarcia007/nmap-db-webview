@@ -12,7 +12,6 @@ The program consists of 3 docker containers. One scans your network with nmap ev
 5. Open <code>http://your-dockerhost:5036</code> in your browser to see the list of found network elements.
 
 
-## additional config (if you like :)
-You can add fancy icons (64px*64px) to <code>./app/public/img/logos/ </code>  
-To match those icons edit <code>./app/private/config-icons.php </code>  
-(See examples in <code>./app/private/config-icons.php </code> )
+## additional config
+You can add fancy Icons (64px*64px) to via settings (Upload Icons).
+Icons can be matched to OS, Vendor or Hostname in settings page.
