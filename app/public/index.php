@@ -29,12 +29,18 @@ $router->map( 'GET', '/setup', function() {
 */
 $router->map( 'GET', '/', function() {
     auth_required();
+	$order = 'ipv4';
+	require 'pages/home.php';
+});
+
+$router->map( 'GET', '/order-by/[char:order]', function( $order ) {
+    auth_required();
 	require 'pages/home.php';
 });
 
 
 /*
-* home
+* admin
 */
 $router->map( 'GET', '/icon-upload', function() {
     auth_required('admin');
@@ -55,6 +61,7 @@ $router->map( 'POST', '/icon-assignment', function() {
     auth_required('admin');
 	require 'pages/icon-assign.php';
 });
+
 /*
 * login
 */
@@ -70,7 +77,7 @@ $router->map( 'POST', '/auth/login', function() {
 });
 
 /*
-* loginout
+* logout
 */
 $router->map( 'GET', '/auth/logout', function() {
     session_destroy();
