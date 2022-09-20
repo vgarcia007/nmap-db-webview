@@ -105,11 +105,21 @@ class HOSTS extends DB{
     }
 
 
-    public function view_known_hosts(){
+    public function view_known_hosts($order){
+
+        $order_choice = array(
+            'ipv4' => 'inet_aton(ipv4)',
+            'reg-date' => 'reg_date DESC',
+            'last-seen' => 'last_seen DESC',
+        );
+
+        if(!isset($order_choice[$order])){
+            $order='ipv4';
+        }
 
         $data = array();
-        
-        $query = $this->pdo->prepare("SELECT * FROM hosts WHERE state != '' ORDER BY inet_aton(ipv4)");
+
+        $query = $this->pdo->prepare("SELECT * FROM hosts WHERE state != '' ORDER BY " . $order_choice[$order]);
         $result = $query->execute(array());
         while($row = $query->fetch(PDO::FETCH_ASSOC)) {
 
