@@ -17,9 +17,9 @@
               Order by
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="/">IPv4</a></li>
-                <li><a class="dropdown-item" href="/order-by/reg-date">registration date</a></li>
-                <li><a class="dropdown-item" href="/order-by/last-seen">registration last seen</a></li>
+                <li><a class="dropdown-item" href="/">Order by IPv4</a></li>
+                <li><a class="dropdown-item" href="/order-by/reg-date">Order by registration date</a></li>
+                <li><a class="dropdown-item" href="/order-by/last-seen">Order by registration last seen</a></li>
               </ul>
             </div>
           </div>

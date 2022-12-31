@@ -39,6 +39,18 @@ $router->map( 'GET', '/order-by/[char:order]', function( $order ) {
 });
 
 
+$router->map( 'POST', '/json', function() {
+    api_key_required();
+	$order = 'ipv4';
+	require 'pages/json_all.php';
+});
+
+$router->map( 'POST', '/json/order-by/[char:order]', function( $order ) {
+    api_key_required();
+	require 'pages/json_all.php';
+});
+
+
 /*
 * admin
 */

@@ -25,6 +25,26 @@ function echo_json_array($data){
 
 }
 
+function api_key_required(){
+
+    if(!isset($_POST)){
+        header('HTTP/1.0 403 Forbidden');
+        die();
+    }
+    if (array_key_exists('api-key', $_POST)) {
+        
+        if ($_POST['api-key'] == '04c8209e-8906-11ed-a1eb-0242ac120002') {
+            #logger('permission granted');
+        }else{
+            header('HTTP/1.0 403 Forbidden');
+        die();
+        }
+    }else {
+        header('HTTP/1.0 403 Forbidden');
+        die();
+    }
+}
+
 function auth_required($role='user'){
 
     if (array_key_exists('id', $_SESSION)) {
